@@ -4,9 +4,8 @@ const port = 3000
 
 const apiRoutes = require("./routes/apiRoutes")
 
-app.get('/', (req, res) => {
-    
-    res.json({message: "API running..."})
+app.get('/', async (req, res, next) => {
+    res.json({message:"Api on running"})
 })
 
 // DB Connect
