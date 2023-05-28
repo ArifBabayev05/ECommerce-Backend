@@ -48,7 +48,7 @@ const productSchema = mongoose.Schema({
     reviews: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref:Review
+            ref: Review
         }
     ]
 
@@ -56,8 +56,11 @@ const productSchema = mongoose.Schema({
 
 }, { timestamps: true })
 
-productSchema.index();
-
 const Product = mongoose.model("Product", productSchema)
+
+//For be faster searcching operation
+productSchema.index({ name: "text", description: "text" }, { name: "TextIndex" });
+productSchema.index({ "attrs.key": 1, "attrs.value": 1 });
+
 
 module.exports = Product
