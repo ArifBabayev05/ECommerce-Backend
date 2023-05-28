@@ -1,4 +1,4 @@
-const Product = require("../models/ProductModule")
+const Product = require("../models/ProductModel")
 
 const getProduct = (req,res)=>{
     Product.create({name: "Sonic"}) 

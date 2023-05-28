@@ -41,7 +41,7 @@ const productSchema = mongoose.Schema({
     attrs: [
         { key: { type: String }, value: { type: String } }
     ],
-    image: [
+    images: [
         imageScheme
     ],
     //1-n Relationship
