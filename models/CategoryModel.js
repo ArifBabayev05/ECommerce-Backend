@@ -6,7 +6,7 @@ const categoryScheme = mongoose.Schema({
     image: { type: String, default: "/images/tablet-category.png" },
     attrs: [{ key: { type: String }, value: [{ type: String }] }]
 })
-
+categoryScheme.index({ description: 1 })
 const Category = mongoose.model("Category", categoryScheme)
 
 module.exports = Category
