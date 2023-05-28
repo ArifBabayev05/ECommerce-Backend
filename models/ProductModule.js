@@ -1,5 +1,10 @@
 
 const mongoose = require("mongoose")
+const Review = require("./ReviewModel");
+
+const imageScheme = mongoose.Schema({
+    path: { type: String, required: true }
+})
 const productSchema = mongoose.Schema({
     name: {
         type: String,
@@ -34,13 +39,17 @@ const productSchema = mongoose.Schema({
         default: 0
     },
     attrs: [
-        {key:{ type:String },value:{ type:String}}
+        { key: { type: String }, value: { type: String } }
     ],
-    image:[
-
+    image: [
+        imageScheme
     ],
-    reviews:[
-        
+    //1-n Relationship
+    reviews: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref:Review
+        }
     ]
 
 
