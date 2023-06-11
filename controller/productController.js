@@ -1,13 +1,26 @@
 const recordsPerPage = require("../config/pagination");
 const Product = require("../models/ProductModel")
 
-const getProduct = async (req,res, next)=>{
+const getProduct = async (req, res, next) => {
     try {
-        const products = await Product.find({}).sort({name:1}).limit(recordsPerPage)
-        // 1-->Ascending; -1-->Descending
-        res.json({products});
+        const pageNum = Number(req.query.pageNum) || 1;
+        const totalProducts = await Product.countDocuments({});
+
+        // sorting
+        const sort = {}
+
+        const products = await Product.find({})
+            .skip(recordsPerPage * (pageNum - 1))
+            .sort({ name: 1 })
+            .limit(recordsPerPage);
+
+        res.json({
+            products,
+            pageNum,
+            paginationLinksNumber: Math.ceil(totalProducts / recordsPerPage),
+        });
     } catch (error) {
-        next(error)
+        next(error);
     }
 
 }
