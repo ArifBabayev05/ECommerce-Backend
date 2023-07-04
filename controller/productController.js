@@ -22,7 +22,7 @@ const getProduct = async (req, res, next) => {
         if (categoryName) {
             queryCondition = true;
             let a = categoryName.replaceAll(",", "/")
-       
+            var regEx = new RegExp("^" + a)
         }
 
         if (queryCondition) {
