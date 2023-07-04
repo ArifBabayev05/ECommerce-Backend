@@ -22,12 +22,12 @@ const getProduct = async (req, res, next) => {
         if (categoryName) {
             queryCondition = true;
             let a = categoryName.replaceAll(",", "/")
-            
+       
         }
 
         if (queryCondition) {
             query = {
-                $and: [priceQueryCondition, ratingQueryCondition],
+                $and: [priceQueryCondition, ratingQueryCondition,],
             };
         }
 
