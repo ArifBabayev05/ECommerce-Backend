@@ -23,12 +23,45 @@ const getProduct = async (req, res, next) => {
             queryCondition = true;
             let a = categoryName.replaceAll(",", "/")
             var regEx = new RegExp("^" + a)
-            categoryQueryCondition = {category: regEx}
+            categoryQueryCondition = { category: regEx }
+        }
+        if (req.query.category) {
+            queryCondition = true;
+            let a = req.query.category.split(",").map((item) => {
+                if (item) return new RegExp("^" + item)
+            })
+            categoryQueryCondition = { $in: a }
+        }
+
+        let attrsQueryCondition = [];
+        if (req.query.attrs) {
+            // attrs=RAM-1TB-2TB-4TB,color-blue-red
+            // [ 'RAM-1TB-4TB', 'color-blue', '' ]
+            attrsQueryCondition = req.query.attrs.split(",").reduce((acc, item) => {
+                if (item) {
+                    let a = item.split("-");
+                    let values = [...a];
+                    values.shift(); // removes first item
+                    let a1 = {
+                        attrs: { $elemMatch: { key: a[0], value: { $in: values } } },
+                    };
+                    acc.push(a1);
+                    // console.dir(acc, { depth: null })
+                    return acc;
+                } else return acc;
+            }, []);
+            
+            queryCondition = true;
         }
 
         if (queryCondition) {
             query = {
-                $and: [priceQueryCondition, ratingQueryCondition]
+                $and: [
+                    priceQueryCondition,
+                    ratingQueryCondition,
+                    categoryQueryCondition,
+                    ...attrsQueryCondition
+                ],
             };
         }
 
